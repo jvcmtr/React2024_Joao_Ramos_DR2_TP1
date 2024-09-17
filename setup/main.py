@@ -1,7 +1,7 @@
 from utils import ler_arquivo, escrever_arquivo
 from templateJS import default_js, app_js, p_js , p_end
 
-n_parte = 0 # Numero da secção atual
+parte = 0 # Numero da secção atual
 path_parte = ""
 parte_import = ""
 parte_ex = [] # Exercicios de cada secção
@@ -13,7 +13,7 @@ def _path(str):
   return _PATH + str
 
 
-def open_parte(line):
+def opeparte(line):
   global parte, path_parte, parte_ex, partes
   try:
     parte = int(line[:2].strip())
@@ -31,12 +31,12 @@ def open_parte(line):
 
 
 def close_parte():
-  global n_parte, path_parte, parte_import, p_end
-  if (n_parte == 0):
+  global parte, path_parte, parte_ex, p_end
+  if (parte == 0):
     return
 
   p_str = ler_arquivo(path_parte)
-  p_import = ""
+  p_imp = ""
   p_comp = ""
   for i in parte_ex:
     p_imp = p_imp + f"import Exercicio{i} from './Exercicio{i}.jsx'\n"
@@ -48,8 +48,9 @@ def close_parte():
 
 
 def get_exercicio_info(line):
+  global parte
   n = line.replace("Exercício ", "").replace(":", " ")[:2].strip()
-  path = f"questoes/parte_{parte}/Exercicio{n}.jsx"
+  path = _path(f"questoes/parte_{parte}/Exercicio{n}.jsx")
 
   js = default_js \
   .replace("@COMPONENT", f"Exercicio{n}" ) \
@@ -81,13 +82,13 @@ def escrever_app():
 
 
 def main():
-  global n_parte, default_js, path_parte
+  global parte, default_js, path_parte, parte_ex
   a = ler_arquivo('./setup/enunciado.txt')
 
   for line in a.split("\n"):
     if (("Exercício" not in line) and (len(line) > 2)):
       close_parte()
-      open_parte(line)
+      opeparte(line)
 
     if line.startswith("Exercício"):
       (n, path, js) = get_exercicio_info(line)
