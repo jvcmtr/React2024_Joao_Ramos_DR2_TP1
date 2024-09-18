@@ -37,7 +37,6 @@ const exercicio2 = {
   alignItems: 'start',
   color:'#fff',
   textAlign: 'left',
-  font: 'Helvetica'
 }
 
 const entryStyle = {

@@ -15,5 +15,6 @@ export default function Exercicio7() {
 }
 const exercicio7 = {
   textAlign: 'center',
-  color: '#fff'
+  color: '#fff',
+  padding: '10px'
 }
